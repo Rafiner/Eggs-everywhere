@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Golden Yolk Market</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Products - Golden Yolk Market</title>
+    <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js for analytics -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="dashboard">
@@ -19,10 +17,12 @@
             </a>
             
             <ul class="sidebar-menu">
-                <li><a href="dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li><a href="products.html"><i class="fas fa-egg"></i> Products</a></li>
-                <li><a href="orders.html"><i class="fas fa-shopping-bag"></i> Orders</a></li>
-                <li><a href="users.html"><i class="fas fa-users"></i> Users</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="products.html" class="active"><i class="fas fa-store"></i> Products</a></li>
+                <li><a href="orders.html"><i class="fas fa-shopping-bag"></i> My Orders</a></li>
+                <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="cart.html"><i class="fas fa-shopping-cart"></i> Cart <span class="cart-count" style="background: var(--primary); color: white; border-radius: 50%; padding: 0.2rem 0.5rem; font-size: 0.8rem; margin-left: 0.5rem;">0</span></a></li>
+                <li><a href="wishlist.html"><i class="fas fa-heart"></i> Wishlist</a></li>
                 <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </aside>
@@ -30,165 +30,126 @@
         <!-- Main Content -->
         <main class="main-content">
             <div class="dashboard-header">
-                <h1>Admin Rainer</h1>
-                <p>Manage your store and monitor performance</p>
+                <h1>Our Products</h1>
+                <p>Fresh eggs from our farm to your table</p>
             </div>
 
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="stat-value" id="totalUsers">0</div>
-                    <div class="stat-label">Total Users</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-egg"></i>
-                    </div>
-                    <div class="stat-value" id="totalProducts">0</div>
-                    <div class="stat-label">Total Products</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-shopping-bag"></i>
-                    </div>
-                    <div class="stat-value" id="totalOrders">0</div>
-                    <div class="stat-label">Total Orders</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                    <div class="stat-value" id="totalRevenue">₱0</div>
-                    <div class="stat-label">Total Revenue</div>
-                </div>
-            </div>
-
-            <!-- Second Row Stats -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="stat-value" id="activeProductsCount">0</div>
-                    <div class="stat-label">Active Products</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <div class="stat-value" id="pendingOrdersCount">0</div>
-                    <div class="stat-label">Pending Orders</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-user-plus"></i>
-                    </div>
-                    <div class="stat-value" id="newCustomersCount">0</div>
-                    <div class="stat-label">New Customers (30d)</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <div class="stat-value" id="outOfStockCount">0</div>
-                    <div class="stat-label">Out of Stock</div>
-                </div>
-            </div>
-
-            <!-- Performance Metrics -->
+            <!-- Products Controls -->
             <div class="card">
-                <h2>Performance Metrics</h2>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
-                    <div style="text-align: center; padding: 1rem; background: #f0f9ff; border-radius: 0.5rem;">
-                        <div class="stat-value" style="color: #0369a1;" id="avgOrderValue">₱0</div>
-                        <div class="stat-label" style="color: #0369a1;">Avg Order Value</div>
+                <div class="product-header">
+                    <div style="flex: 1;">
+                        <h2 style="margin: 0;">Browse Products</h2>
+                        <p style="color: var(--gray); margin: 0.5rem 0 0 0;" id="productsCount">Loading products...</p>
                     </div>
-                    <div style="text-align: center; padding: 1rem; background: #f0fdf4; border-radius: 0.5rem;">
-                        <div class="stat-value" style="color: #166534;" id="conversionRate">0%</div>
-                        <div class="stat-label" style="color: #166534;">Conversion Rate</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recent Orders & Low Stock -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                <!-- Recent Orders -->
-                <div class="card">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                        <h2>Recent Orders</h2>
-                        <a href="orders.html" class="btn btn-outline">View All</a>
-                    </div>
-                    <div id="recentOrders">
-                        <div class="loading-spinner">
-                            <i class="fas fa-spinner fa-spin"></i>
-                            <p>Loading recent orders...</p>
+                    <div class="products-controls">
+                        <div class="form-group" style="margin: 0; min-width: 200px;">
+                            <select id="sortSelect" class="form-select">
+                                <option value="newest">Sort by: Newest First</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="name">Name: A to Z</option>
+                                <option value="stock">Stock: High to Low</option>
+                            </select>
                         </div>
                     </div>
                 </div>
 
-                <!-- Low Stock Items -->
-                <div class="card">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                        <h2>Low Stock Alert</h2>
-                        <a href="products.html" class="btn btn-outline">Manage</a>
+                <div class="products-filters">
+                    <button class="filter-btn active" data-filter="all">All Products</button>
+                    <button class="filter-btn" data-filter="chicken">Chicken Eggs</button>
+                    <button class="filter-btn" data-filter="duck">Duck Eggs</button>
+                    <button class="filter-btn" data-filter="quail">Quail Eggs</button>
+                    <button class="filter-btn" data-filter="organic">Organic</button>
+                    <button class="filter-btn" data-filter="premium">Premium</button>
+                </div>
+
+                <div class="search-box">
+                    <div class="form-group">
+                        <div style="position: relative; max-width: 400px;">
+                            <i class="fas fa-search" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--gray);"></i>
+                            <input type="text" id="productSearch" class="form-input" placeholder="Search products by name or description..." style="padding-left: 2.5rem;">
+                        </div>
                     </div>
-                    <div id="lowStockItems">
-                        <div class="loading-spinner">
-                            <i class="fas fa-spinner fa-spin"></i>
-                            <p>Checking stock levels...</p>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="stats-grid" style="margin-top: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
+                    <div class="stat-card" style="padding: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-egg" style="color: var(--primary);"></i>
+                            <div>
+                                <div class="stat-value" style="font-size: 1.5rem;" id="totalProducts">0</div>
+                                <div class="stat-label">Total Products</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card" style="padding: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                            <div>
+                                <div class="stat-value" style="font-size: 1.5rem;" id="inStockProducts">0</div>
+                                <div class="stat-label">In Stock</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card" style="padding: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-exclamation-triangle" style="color: var(--warning);"></i>
+                            <div>
+                                <div class="stat-value" style="font-size: 1.5rem;" id="lowStockProducts">0</div>
+                                <div class="stat-label">Low Stock</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card" style="padding: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-tags" style="color: var(--primary);"></i>
+                            <div>
+                                <div class="stat-value" style="font-size: 1.5rem;" id="categoriesCount">0</div>
+                                <div class="stat-label">Categories</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Bulk Actions -->
+            <!-- Products Grid -->
             <div class="card">
-                <h2>Bulk Actions</h2>
-                <div class="bulk-actions">
-                    <select id="bulkAction" class="form-select" style="min-width: 150px;">
-                        <option value="">Select Action</option>
-                        <option value="confirmed">Mark as Confirmed</option>
-                        <option value="shipped">Mark as Shipped</option>
-                        <option value="delivered">Mark as Delivered</option>
-                        <option value="cancelled">Cancel Orders</option>
-                    </select>
-                    <button id="applyBulkAction" class="btn btn-primary" disabled>Apply to Selected</button>
-                    <span id="selectedCount">0 orders selected</span>
+                <div id="productsGrid" class="products-grid">
+                    <div class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading products...</p>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Quick Actions -->
-            <div class="card">
-                <h2>Quick Actions</h2>
-                <div class="quick-actions">
-                    <a href="products.html" class="btn btn-primary">
-                        <i class="fas fa-plus"></i>
-                        Add New Product
-                    </a>
-                    <a href="orders.html" class="btn btn-secondary">
-                        <i class="fas fa-shopping-bag"></i>
-                        View All Orders
-                    </a>
-                    <button class="btn btn-warning" id="generateReportBtn">
-                        <i class="fas fa-download"></i>
-                        Generate Report
+                <!-- Products Pagination -->
+                <div class="products-pagination" id="productsPagination" style="display: none;">
+                    <button class="btn btn-outline" id="prevPage">
+                        <i class="fas fa-chevron-left"></i> Previous
                     </button>
-                    <button class="btn btn-success" id="exportCSVBtn">
-                        <i class="fas fa-file-csv"></i>
-                        Export to CSV
+                    <span id="pageInfo">Page 1 of 1</span>
+                    <button class="btn btn-outline" id="nextPage">
+                        Next <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- Product Quick View Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2 style="margin: 0;">Product Details</h2>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div id="productModalContent">
+                <!-- Product details will be loaded here -->
+            </div>
+        </div>
     </div>
 
     <!-- Firebase SDK -->
@@ -200,7 +161,7 @@
     <script src="../js/firebase/config.js"></script>
     <script src="../js/auth/auth.js"></script>
     <script src="../js/utils/helpers.js"></script>
-    <script src="../js/admin/admin-dashboard.js"></script>
+    <script src="../js/user/products.js"></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
@@ -208,8 +169,7 @@
             await authManager.ready;
 
             const user = authManager.getCurrentUser();
-            const isAdmin = await authManager.isAdmin();
-            if (!user || !isAdmin) {
+            if (!user) {
                 window.location.href = '../login.html';
                 return;
             }
@@ -223,21 +183,25 @@
                 }
             });
 
-            // Report generation
-            document.getElementById('generateReportBtn').addEventListener('click', function() {
-                if (window.adminDashboard) {
-                    window.adminDashboard.generateReport();
+            // Modal close handler
+            document.getElementById('closeModal').addEventListener('click', function() {
+                document.getElementById('productModal').classList.remove('active');
+            });
+
+            // Close modal when clicking outside
+            document.getElementById('productModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
                 }
             });
 
-            // CSV export
-            document.getElementById('exportCSVBtn').addEventListener('click', function() {
-                if (window.adminDashboard) {
-                    window.adminDashboard.exportToCSV();
+            // Initialize products manager
+            setTimeout(() => {
+                if (window.productsManager) {
+                    window.productsManager.initEnhancedFeatures();
                 }
-            });
+            }, 1000);
         });
     </script>
 </body>
-
 </html>
